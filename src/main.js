@@ -3,7 +3,8 @@ import App from "./App.vue";
 
 const renderer = createRenderer({
     // 元素插入到页面中会调用此方法
-    insert: (child, parent, anchor) => {
+    insert: (child, parent = {}, anchor) => {
+        if (!child) return
         child.parent = parent;
         if (!parent.childs) {
             // 格式化父子关系
@@ -28,17 +29,28 @@ const renderer = createRenderer({
     remove: (child) => { },
     // 创建元素会调用此方法
     createElement: (tag, isSVG, is) => {
+        console.log('createElement', tag);
         return { tag };
     },
-    createText: (text) => { },
+    createText: (text) => {
+        console.log('createText', text)
+    },
     createComment: (text) => { },
     setText: (node, text) => { },
     setElementText: (el, text) => { },
-    parentNode: (node) => { },
-    nextSibling: (node) => { },
-    querySelector: (selector) => { },
+    parentNode: (node) => {
+        console.log('parentNode', node)
+    },
+    nextSibling: (node) => {
+        console.log('nextSibling', node)
+    },
+    querySelector: (selector) => {
+        console.log('querySelector', selector)
+    },
     setScopeId(el, id) { },
-    cloneNode(el) { },
+    cloneNode(el) {
+        console.log('cloneNode', el)
+    },
     insertStaticContent(content, parent, anchor, isSVG) { },
     // 每次更新属性会调用此方法
     patchProp(el, key, prevValue, nextValue) {
@@ -51,12 +63,14 @@ const renderer = createRenderer({
 let canvas, ctx;
 const gap = 20;
 const draw = (el, noClear = false) => {
+    console.log(el)
     // 清空画布
-    if (!noClear) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
+    // if (!noClear) {
+    //     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // }
     // 判断tag
-    if (el.tag == "BarChart") {
+    if (el.tag === "BarChart") {
+        console.log(el.nextSibling);
         const { data } = el;
         const barWidth = (canvas.width - gap * data.length) / data.length,
             paddingBottom = 20;
@@ -71,9 +85,32 @@ const draw = (el, noClear = false) => {
             ctx.fillText(title, x + barWidth / 2 - 12, canvas.height);
         });
     }
+    if (el.tag === 'Circle') {
+
+        const { style } = el
+        ctx.beginPath();
+        ctx.arc(style.width, 350, 100, 0, Math.PI * 2, true);
+        //不关闭路径路径会一直保留下去
+        ctx.closePath();
+        ctx.fillStyle = 'rgba(0,255,0,0.25)';
+        ctx.fill();
+    }
+    if (el.tag === 'Rect') {
+        myRect(ctx, 50, 50, 200, 200);
+    }
+
     // 递归绘制⼦节点
     el.childs && el.childs.forEach((child) => draw(child, true));
 };
+
+function myRect(ctxTmp, x, y, w, h) {
+    ctxTmp.moveTo(x, y)
+    ctxTmp.lineTo(x + w, y)
+    ctxTmp.lineTo(x + w, y + h)
+    ctxTmp.lineTo(x, y + h)
+    ctxTmp.lineTo(x, y)
+    ctxTmp.stroke()
+}
 
 function createCanvasApp(App) {
     const app = renderer.createApp(App);
