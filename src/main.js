@@ -54,7 +54,10 @@ const renderer = createRenderer({
     insertStaticContent(content, parent, anchor, isSVG) { },
     // 每次更新属性会调用此方法
     patchProp(el, key, prevValue, nextValue) {
-        console.log("patchProp", key);
+        console.log("patchProp", key, prevValue, nextValue);
+        if (prevValue) {
+            draw(el)
+        }
         el[key] = nextValue;
     },
 });
@@ -70,7 +73,6 @@ const draw = (el, noClear = false) => {
     // }
     // 判断tag
     if (el.tag === "BarChart") {
-        console.log(el.nextSibling);
         const { data } = el;
         const barWidth = (canvas.width - gap * data.length) / data.length,
             paddingBottom = 20;
@@ -86,13 +88,17 @@ const draw = (el, noClear = false) => {
         });
     }
     if (el.tag === 'Circle') {
+        console.log(el);
+        const { r, x, y, fillStyle } = el
+        if (!noClear) {
+            ctx.clearRect(x - r, y - r, r * 2, r * 2);
+        }
 
-        const { style } = el
         ctx.beginPath();
-        ctx.arc(style.width, 350, 100, 0, Math.PI * 2, true);
+        ctx.arc(x, y, r, 0, Math.PI * 2, true);
         //不关闭路径路径会一直保留下去
         ctx.closePath();
-        ctx.fillStyle = 'rgba(0,255,0,0.25)';
+        ctx.fillStyle = fillStyle;
         ctx.fill();
     }
     if (el.tag === 'Rect') {
