@@ -11,6 +11,7 @@
   <Circle :x="x" :y="y" :r="r" fillStyle="rgba(0,255,0,0.25)">
     <Rect v-if="show" :x="150" :y="150" :w="100" :h="80" fillStyle="gray" />
   </Circle>
+  <Ellipse :x="300" :y="300" :radiusX="200" :radiusY="50" />
 </template>
 
 <script setup>

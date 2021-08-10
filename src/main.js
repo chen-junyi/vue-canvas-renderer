@@ -2,7 +2,8 @@ import { createRenderer } from "@vue/runtime-dom";
 import App from "./App.vue";
 import {
     drawRect,
-    drawCircle
+    drawCircle,
+    drawEllipse
 } from './utils/canvasDraw'
 
 const nodeOps = {
@@ -116,6 +117,11 @@ const draw = (el, clear = false) => {
         //     ctx.clearRect(el.parent.oldXY.x + x, el.parent.oldXY.y + y, w, h);
         // }
         drawRect(ctx, x, y, w, h, fillStyle);
+    }
+
+    if (el.tag === 'Ellipse') {
+        const { x, y, radiusX, radiusY } = el
+        drawEllipse(ctx, x, y, radiusX, radiusY)
     }
 
     // 递归绘制⼦节点
