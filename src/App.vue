@@ -12,6 +12,18 @@
     <Rect v-if="show" :x="150" :y="150" :w="100" :h="80" fillStyle="gray" />
   </Circle>
   <Ellipse :x="300" :y="300" :radiusX="200" :radiusY="50" />
+  <Line :x1="10" :y1="10" :x2="100" :y2="100" />
+  <Text
+    text="哈哈哈"
+    :x="200"
+    :y="200"
+    :style="{
+      color: 'red',
+      font: '40px Georgia',
+      textBaseline: 'bottom',
+      textAlign: 'left',
+    }"
+  ></Text>
 </template>
 
 <script setup>

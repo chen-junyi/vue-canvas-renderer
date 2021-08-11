@@ -3,7 +3,9 @@ import App from "./App.vue";
 import {
     drawRect,
     drawCircle,
-    drawEllipse
+    drawEllipse,
+    drawLine,
+    fillText
 } from './utils/canvasDraw'
 
 const nodeOps = {
@@ -122,6 +124,18 @@ const draw = (el, clear = false) => {
     if (el.tag === 'Ellipse') {
         const { x, y, radiusX, radiusY } = el
         drawEllipse(ctx, x, y, radiusX, radiusY)
+    }
+
+    if (el.tag === 'Line') {
+        const { x1, y1, x2, y2 } = el
+        drawLine(ctx, x1, y1, x2, y2, 'blue')
+    }
+
+    if (el.tag === 'Text') {
+        const { x, y, text, style = {} } = el
+        fillText(ctx, x, y, text, style)
+        console.log(el)
+        // drawLine(ctx, x1, y1, x2, y2, 'blue')
     }
 
     // 递归绘制⼦节点
