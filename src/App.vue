@@ -5,7 +5,7 @@
   <Ellipse :x="300" :y="300" :radiusX="200" :radiusY="50" />
   <Line :x1="100" :y1="10" :x2="100" :y2="100" />
   <Text
-    text="哈哈哈"
+    :text="text"
     :x="200"
     :y="200"
     :style="{
@@ -18,28 +18,29 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref } from "vue";
 
 const x = ref(50);
 const y = ref(50);
 const r = ref(50);
 const show = ref(true);
+const text = ref("hello world");
 
-document.addEventListener('keyup', e => {
+document.addEventListener("keyup", (e) => {
   switch (e.code) {
-    case 'ArrowUp':
+    case "ArrowUp":
       y.value -= 20;
       break;
-    case 'ArrowDown':
+    case "ArrowDown":
       y.value += 20;
       break;
-    case 'ArrowLeft':
+    case "ArrowLeft":
       x.value -= 20;
       break;
-    case 'ArrowRight':
+    case "ArrowRight":
       x.value += 20;
       break;
-    case 'Enter':
+    case "Enter":
       show.value = !show.value;
       break;
     default:
